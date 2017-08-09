@@ -1,0 +1,16 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Logging\PlaceAll.js">
+    <Files>
+      <File FileName="Assets\Scripts\Logging\PlaceAll.js" Line="724" Column="51" />
+      <File FileName="Assets\Standard Assets\LSL_BCI_Output.cs" Line="18" Column="43" />
+      <File FileName="Assets\Standard Assets\LSL_BCI_Input.cs" Line="27" Column="3" />
+      <File FileName="Assets\Standard Assets\LSL.cs" Line="890" Column="1" />
+      <File FileName="Assets\Scripts\Movement\RobotWalk.js" Line="244" Column="55" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

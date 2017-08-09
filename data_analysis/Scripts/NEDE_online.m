@@ -5,20 +5,20 @@ clc; clear all; close all;
 
 %% Settings
 % Specify which systems are connected
-UNITY = true;
+UNITY = false;
 PYTHON = false;
-EEG_connected = true;
-EYE_connected = true;
+EEG_connected = false;
+EYE_connected = false;
 CLOSED_LOOP = false;
 MARKER_STREAM = false; % Output event markers for BCI Lab
 
-SAVE_RAW_DATA = true;
-SAVE_EPOCHED_DATA = true;
-PLOTS = true;
+SAVE_RAW_DATA = false;
+SAVE_EPOCHED_DATA = false;
+PLOTS = false;
 
 EPOCHED_VERSION = 3; % Different versions of the data. Look at readme in data folder for details.
 SUBJECT_ID = '100';
-BLOCK = '6'; % First block in batch
+BLOCK = '7'; % First block in batch
 nBLOCKS = 1; % Number of blocks to do in batch
 
 EEG_WARNING_THRESHOLD = 300; % threshold for EEG data overwhich matlab will warn you that you are getting extreme values
@@ -55,6 +55,7 @@ n_block_start_cues = 0;
 % Thresholds for pupil radius to be considered valid data
 blink_upper_thresh = 2.5;
 blink_lower_thresh = 1.5;
+
 %% Create Filters
 % High Pass Filter for EEG
 Fstop = .5;         % Stopband Frequency
@@ -292,7 +293,9 @@ for block_counter = str2double(BLOCK):str2double(BLOCK)+nBLOCKS-1
             % Wait 3 sec after receiving the exit cue to allow the pupil
             % data to come in.
             if unity_data(end,counter_unity) == 2
-                stop_time_live_stream = toc + 3.1;
+                if stop_time_live_stream == inf
+                    stop_time_live_stream = timer + 3.1;
+                end
             end
             if timer > stop_time_live_stream
                 break

@@ -53,7 +53,7 @@ freq_eeg = 2048;
 n_block_start_cues = 0;
 
 % Thresholds for pupil radius to be considered valid data
-blink_upper_thresh = 2.5;
+blink_upper_thresh = 3;
 blink_lower_thresh = 1.5;
 
 %% Create Filters
@@ -469,56 +469,8 @@ for block_counter = str2double(BLOCK):str2double(BLOCK)+nBLOCKS-1
                 %% Process Pupil Data
                 Pupil.avg = mean([Pupil.left; Pupil.right], 1); % Use avg of left and right pupil
                 Pupil.avg = interpBlinks(Pupil.avg, blink_lower_thresh, blink_upper_thresh);
-%                 % Remove blinks
-%                 % Pad the blink flag so that anything within 3 frames of a blink is
-%                 % flagged as a blink too
-%                 Pupil.isBlink = Pupil.avg < 1.5 | Pupil.avg > 2.25;
-%                 Pupil.isBlink_padded = zeros(1, size(Pupil.isBlink, 2));
-%                 for i = 1:size(Pupil.isBlink, 2) - 5
-%                     if sum(Pupil.isBlink(i:i+5)) >= 1
-%                         Pupil.isBlink_padded(i) = 1;
-%                     end
-%                 end
-%                 for i = 6:size(Pupil.isBlink, 2)
-%                     if sum(Pupil.isBlink(i-5:i)) >= 1
-%                         Pupil.isBlink_padded(i) = 1;
-%                     end
-%                 end
-%                 % If there is a blink on either end of an epoch, call the whole end a blink
-%                 if sum(Pupil.isBlink(1:5)) >= 1
-%                     Pupil.isBlink_padded(1:5) = ones(1,5);         
-%                 end
-%                 if sum(Pupil.isBlink(size(Pupil.isBlink,2)-4:end)) >= 1
-%                     Pupil.isBlink_padded(size(Pupil.isBlink,2)-4:end) = ones(1,5);
-%                 end
-%                 blink_starts = find(diff(Pupil.isBlink_padded) == 1) + 1;
-%                 blink_stops = find(diff(Pupil.isBlink_padded) == -1) + 1;
-%                 if Pupil.isBlink_padded(1) == 1
-%                     blink_starts = [1, blink_starts];
-%                 end
-%                 if Pupil.isBlink_padded(end) == 1
-%                     blink_stops = [blink_stops size(Pupil.isBlink_padded, 2)];
-%                 end
-%                 nBlinks = size(blink_starts, 2);
-% 
-%                 % If either end of an epoch is a blink, have it stay flat
-%                 % at the nearest valid value
-%                 if ~isempty(blink_starts)
-%                     if blink_starts(1) == 1
-%                         Pupil.avg(blink_starts(1):blink_stops(1)) = Pupil.avg(blink_stops(1))*ones(1,blink_stops(1));
-%                     end
-%                     if blink_stops(end) == size(Pupil.isBlink,2);
-%                         Pupil.avg(blink_starts(end):blink_stops(end)) = Pupil.avg(blink_starts(end))*ones(1,blink_stops(end)-blink_starts(end)+1);
-%                     end
-% 
-%                     for i = 1:nBlinks
-%                         Pupil.avg(blink_starts(i):blink_stops(i)) = linspace(Pupil.avg(blink_starts(i)), Pupil.avg(blink_stops(i)), blink_stops(i)-blink_starts(i)+1);
-%                     end
-%                 end
-
                 % Lowpass filter the pupil data
                 Pupil.avg = filtfilt(Hd_lp_pupil.sosMatrix, Hd_lp_pupil.ScaleValues, Pupil.avg);
-
                 % Baseline the pupil data to the second prior to first fixation
                 Pupil.baseline = mean(Pupil.avg(1:floor(freq_eye * 1)));
                 Pupil.processed(counter_epoch,:) = Pupil.avg - Pupil.baseline;
